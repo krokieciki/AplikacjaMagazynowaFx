@@ -12,6 +12,9 @@ import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ResourceBundle;
 
 import java.net.URL;
@@ -47,7 +50,7 @@ public class LoginController implements Initializable{
         if (usernameTextField.getText().isBlank() == false && enterPasswordField.getText().isBlank() == false) {
             validateLogin();
         } else {
-            loginMessageLabel.setText("Please enter username and password");
+            loginMessageLabel.setText("Proszę podać nazwę i hasło użytkownika");
         }
 
     }
@@ -58,6 +61,29 @@ public class LoginController implements Initializable{
     }
 
     public void validateLogin(){
+        DatabaseConnection connectNow = new DatabaseConnection();
+        Connection connectDB = connectNow.getConnection();
+
+        String verifyLogin = "SELECT count(1) FROM users WHERE name = '" + usernameTextField.getText() + "' AND password ='" + enterPasswordField.getText() +  "'";
+
+        try{
+
+            Statement statement = connectDB.createStatement();
+            ResultSet queryResult = statement.executeQuery(verifyLogin);
+
+            while(queryResult.next()){
+                if(queryResult.getInt(1) == 1){
+                    loginMessageLabel.setText("Zalogowano pomyślnie");
+                }else{
+                    loginMessageLabel.setText("Podano zły login lub hasło, spróbuj ponownie");
+                }
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            e.getCause();
+        }
+
 
     }
 
