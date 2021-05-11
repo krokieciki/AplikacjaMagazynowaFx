@@ -4,7 +4,10 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,7 +26,7 @@ public class RegisterController implements Initializable {
     @FXML
     private ImageView shieldImageView;
     @FXML
-    private Button closeButton;
+    private Button cancelRegisterButton;
     @FXML
     private Label registrationMessageLabel;
     @FXML
@@ -33,11 +36,11 @@ public class RegisterController implements Initializable {
     @FXML
     private Label confirmPasswordLabel;
     @FXML
-    private String firstnameTextField;
+    private TextField firstnameTextField;
     @FXML
-    private String lastnameTextField;
+    private TextField lastnameTextField;
     @FXML
-    private String usernameTextField;
+    private TextField usernameTextField;
     @FXML
     private ChoiceBox positionBox;
     @FXML
@@ -63,22 +66,23 @@ public class RegisterController implements Initializable {
         loadDataToCheckBox();
     }
 
-    public void registerButtonOnAction(ActionEvent event){
+    public void registerButtonOnAction(javafx.event.ActionEvent event){
 
         if(setPasswordField.getText().equals(confirmPasswordField.getText())){
             registerUser();//tylko jesli hasla dzialaja to wtedy pozwala na polaczenie z baza
             confirmPasswordLabel.setText("");
 
         }else{
-            confirmPasswordField.setText("Password does not match");
+            confirmPasswordLabel.setText("Password does not match");
         }
 
     }
 
-    public void closeButtonOnAction(ActionEvent event){
-        Stage stage = (Stage) closeButton.getScene().getWindow();
-        stage.close();
-        Platform.exit();
+    public void cancelButtonAction()throws Exception{
+        Parent root = FXMLLoader.load(getClass().getResource("HomePage.fxml"));
+
+        Stage window = (Stage) cancelRegisterButton.getScene().getWindow();
+        window.setScene(new Scene(root, 520, 400));
     }
 
     private void loadDataToCheckBox(){
@@ -90,20 +94,16 @@ public class RegisterController implements Initializable {
         list.addAll(a, b, c);
 
         positionBox.getItems().addAll(list);
-
-
-
     }
-
 
     public void registerUser(){
 
         DatabaseConnection connectNow = new DatabaseConnection();
         Connection connectDB = connectNow.getConnection();
 
-        String firstname = firstnameTextField;//.getText();
-        String lastname = lastnameTextField;//.getText();
-        String username = usernameTextField;//.getText();
+        String firstname = firstnameTextField.getText();
+        String lastname = lastnameTextField.getText();
+        String username = usernameTextField.getText();
         String password = setPasswordField.getText();
         String position = (String) positionBox.getValue();
 
@@ -133,5 +133,4 @@ public class RegisterController implements Initializable {
 
 
     }
-
 }
