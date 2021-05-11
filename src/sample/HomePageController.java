@@ -2,7 +2,10 @@ package sample;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -16,7 +19,7 @@ import java.util.ResourceBundle;
 public class HomePageController implements Initializable {
 
     @FXML
-    private Button exitButton;
+    private Button exitButton, goLoginButton;
     @FXML
     private ImageView brandingImageView;
     @FXML
@@ -36,5 +39,11 @@ public class HomePageController implements Initializable {
     public void exitButtonOnAction(ActionEvent event){
         Stage stage = (Stage) exitButton.getScene().getWindow();
         stage.close();
+    }
+    public void switchToLogin() throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
+
+        Stage window = (Stage) goLoginButton.getScene().getWindow();
+        window.setScene(new Scene(root, 520, 400));
     }
 }
