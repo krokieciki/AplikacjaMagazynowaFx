@@ -12,7 +12,7 @@
 
 <AnchorPane prefHeight="645.0" prefWidth="520.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.RegisterController">
    <children>
-      <Button fx:id="closeButton" layoutX="91.0" layoutY="557.0" mnemonicParsing="false" onAction="#closeButtonOnAction" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #bc4848;" text="Cancel" textAlignment="CENTER" textFill="WHITE">
+      <Button fx:id="cancelRegisterButton" layoutX="91.0" layoutY="557.0" mnemonicParsing="false" onAction="#cancelButtonAction" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #bc4848;" text="Cancel" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>

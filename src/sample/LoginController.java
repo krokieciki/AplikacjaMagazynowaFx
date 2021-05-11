@@ -59,12 +59,13 @@ public class LoginController implements Initializable{
 
     }
 
-    public void cancelButtonAction() throws Exception {
+    public void cancelButtonAction()throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("HomePage.fxml"));
 
         Stage window = (Stage) cancelButton.getScene().getWindow();
         window.setScene(new Scene(root, 520, 400));
     }
+
 
     public void validateLogin(){
         DatabaseConnection connectNow = new DatabaseConnection();

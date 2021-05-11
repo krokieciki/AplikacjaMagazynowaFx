@@ -27,7 +27,7 @@
                </image>
             </ImageView>
             <Button fx:id="goLoginButton" layoutX="41.0" layoutY="215.0" mnemonicParsing="false" onAction="#switchToLogin" prefHeight="37.0" prefWidth="210.0" style="-fx-background-color: #bc4848;" text="Login" textFill="WHITE" />
-            <Button fx:id="goRegisterButton" layoutX="41.0" layoutY="270.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="210.0" style="-fx-background-color: #bc4848;" text="Register" textFill="WHITE" />
+            <Button fx:id="goRegisterButton" layoutX="41.0" layoutY="270.0" mnemonicParsing="false" onAction="#switchToRegister" prefHeight="37.0" prefWidth="210.0" style="-fx-background-color: #bc4848;" text="Register" textFill="WHITE" />
             <Button fx:id="exitButton" layoutX="184.0" layoutY="338.0" mnemonicParsing="false" onAction="#exitButtonOnAction" prefHeight="26.0" prefWidth="74.0" style="-fx-background-color: #bc4848;" text="Exit" textFill="WHITE" />
          </children>
       </AnchorPane>

@@ -19,11 +19,15 @@ import java.util.ResourceBundle;
 public class HomePageController implements Initializable {
 
     @FXML
-    private Button exitButton, goLoginButton;
+    private Button exitButton;
     @FXML
     private ImageView brandingImageView;
     @FXML
     private ImageView bagImageView;
+    @FXML
+    private Button goLoginButton;
+    @FXML
+    private Button goRegisterButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
@@ -40,10 +44,19 @@ public class HomePageController implements Initializable {
         Stage stage = (Stage) exitButton.getScene().getWindow();
         stage.close();
     }
+
     public void switchToLogin() throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
 
         Stage window = (Stage) goLoginButton.getScene().getWindow();
         window.setScene(new Scene(root, 520, 400));
     }
+
+    public void switchToRegister() throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("register.fxml"));
+
+        Stage window = (Stage) goRegisterButton.getScene().getWindow();
+        window.setScene(new Scene(root, 520, 645));
+    }
+
 }
