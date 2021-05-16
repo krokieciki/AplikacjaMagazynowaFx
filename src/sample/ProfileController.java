@@ -7,6 +7,8 @@ import javafx.scene.image.ImageView;
 
 import java.io.File;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.Statement;
 import java.util.ResourceBundle;
 
 public class ProfileController implements Initializable {

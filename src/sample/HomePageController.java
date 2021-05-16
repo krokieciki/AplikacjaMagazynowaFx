@@ -14,9 +14,17 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.Statement;
 import java.util.ResourceBundle;
 
 public class HomePageController implements Initializable {
+
+    DatabaseConnection dbConn = new DatabaseConnection();
+    Connection conn = dbConn.getConnection();
+    Statement statement = dbConn.getStatement();
+    SqlProductParser sqlProductParser = new SqlProductParser();
+    String query;
 
     @FXML
     private Button exitButton;
