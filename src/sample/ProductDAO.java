@@ -1,36 +1,18 @@
 package sample;
 
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
-import java.io.File;
-import java.net.URL;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
-import java.util.ResourceBundle;
 
-public class TableProductsController  {
-
-    DatabaseConnection dbConn = new DatabaseConnection();
-    Connection conn = dbConn.getConnection();
-    Statement statement = dbConn.getStatement();
-    SqlProductParser sqlProductParser = new SqlProductParser();
+public class ProductDAO {
+    private SqlProductParser sqlProductParser;
     String query;
+    Statement statement;
 
- /*   @FXML
-    private ImageView storageImageView;
+    public ProductDAO(Statement statement) {
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        File brandingFile = new File("@../../images/storage-icon.png");
-        Image storageImage = new Image(brandingFile.toURI().toString());
-        storageImageView.setImage(storageImage);
-    }*/
+        this.sqlProductParser = new SqlProductParser();
+        this.statement = statement;
+    }
 
     public void createOneNew(Product product)
     {
@@ -239,8 +221,4 @@ public class TableProductsController  {
             System.out.println("Błąd operacji");
         }
     }
-
-
-
-
 }

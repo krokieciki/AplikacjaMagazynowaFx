@@ -13,7 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-import java.awt.event.ActionEvent;
+import javafx.event.ActionEvent;
 import java.io.File;
 import java.net.URL;
 import java.sql.Connection;
@@ -22,6 +22,12 @@ import java.util.ResourceBundle;
 
 
 public class RegisterController implements Initializable {
+
+    DatabaseConnection dbConn = new DatabaseConnection();
+    Connection conn = dbConn.getConnection();
+    Statement statement = dbConn.getStatement();
+    SqlProductParser sqlProductParser = new SqlProductParser();
+    String query;
 
     @FXML
     private ImageView shieldImageView;
