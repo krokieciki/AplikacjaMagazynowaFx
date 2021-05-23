@@ -51,7 +51,7 @@ public class TableProductsController implements Initializable {
     private TableColumn<ProductModel, String> column_date;
     @FXML
     private TableColumn<ProductModel, String> column_quantity;
-    ObservableList<ProductModel> oblist = FXCollections.observableArrayList();
+    //ObservableList<ProductModel> oblist = FXCollections.observableArrayList();
 
     //dodawanie i usuwanie
     @FXML
@@ -97,21 +97,21 @@ public class TableProductsController implements Initializable {
         column_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
         try {
-            rs = conn.createStatement().executeQuery("SELECT * FROM products");
-
-            populateTable(rs);
+            populateTable();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
     }
 
-    public void populateTable(ResultSet result) throws SQLException {
+    public void populateTable() throws SQLException {
+        ObservableList<ProductModel> oblist = FXCollections.observableArrayList();
+        rs = conn.createStatement().executeQuery("SELECT * FROM products");
         oblist.clear();
-        while (result.next()) {
-            oblist.add(new ProductModel(result.getString("product_id"),
-                    result.getString("product_name"), result.getString("price"),
-                    result.getString("expiry_date"), result.getString("quantity")));
+        while (rs.next()) {
+            oblist.add(new ProductModel(rs.getString("product_id"),
+                    rs.getString("product_name"), rs.getString("price"),
+                    rs.getString("expiry_date"), rs.getString("quantity")));
         }
         table.setItems(oblist);
 
@@ -124,12 +124,8 @@ public class TableProductsController implements Initializable {
         product.setExpiry_date(dateInput.getValue().toString());
         product.setQuantity(quantityInput.getText());
 
-        //table.getItems().add(product);
-        //chyba lepiej dodam do bazy, a potem odswoeze widok, bo
-        //nie bedzie id
-
         try {
-            conn.createStatement().execute("INSERT INTO products VALUES ('" +nameInput.getText() + "', '" +
+            conn.createStatement().executeUpdate("INSERT INTO products VALUES ('" +nameInput.getText() + "', '" +
                             priceInput.getText() + "', '" + dateInput.getValue().toString() + "', '" +
                             quantityInput.getText() + "');");
         } catch (SQLException e) {
@@ -141,17 +137,28 @@ public class TableProductsController implements Initializable {
         quantityInput.clear();
 
         try {
-            rs = conn.createStatement().executeQuery("SELECT * FROM products");
-            populateTable(rs);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            populateTable();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
     public void deleteButtonOnAction() {
-        oblist.clear();
-        
+        ObservableList<ProductModel> oblist = FXCollections.observableArrayList();
+        oblist = table.getSelectionModel().getSelectedItems();
+        String idForDelete = "";
+        for (ProductModel product : oblist) {
+            idForDelete += product.getProduct_id() +", ";
+        }
+        idForDelete = idForDelete.substring(0, idForDelete.length() - 2);
 
+        try {
+            conn.createStatement().executeUpdate("DELETE FROM products WHERE product_id IN (" +
+                    idForDelete + ");");
+            populateTable();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void logoutButtonOnAction() throws Exception{
