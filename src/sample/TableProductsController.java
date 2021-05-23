@@ -80,6 +80,7 @@ public class TableProductsController implements Initializable {
         column_date.setCellValueFactory(new PropertyValueFactory<>("expiry_date"));
         column_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
+        table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         table.setItems(oblist);
     }
 
