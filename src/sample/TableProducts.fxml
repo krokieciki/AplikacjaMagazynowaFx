@@ -16,18 +16,18 @@
       <AnchorPane prefHeight="550.0" prefWidth="200.0" style="-fx-background-color: #bc4848;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Button layoutX="26.0" layoutY="309.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="140.0" text="Delete" />
-            <Button layoutX="26.0" layoutY="482.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="140.0" text="Exit" />
+            <Button fx:id="logoutButton" layoutX="26.0" layoutY="482.0" mnemonicParsing="false" onAction="#logoutButtonOnAction" prefHeight="30.0" prefWidth="140.0" text="Logout" />
             <Button layoutX="26.0" layoutY="266.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="140.0" text="Add" />
             <TextField alignment="CENTER" layoutX="21.0" layoutY="48.0" promptText="Price" />
             <TextField alignment="CENTER" layoutX="21.0" layoutY="115.0" promptText="Quantity " />
             <TextField alignment="CENTER" layoutX="21.0" layoutY="14.0" promptText="Product_name" />
-            <ImageView fitHeight="90.0" fitWidth="100.0" layoutX="51.0" layoutY="168.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="storageImageView" fitHeight="90.0" fitWidth="100.0" layoutX="51.0" layoutY="168.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../images/storage-icon.png" />
                </image>
             </ImageView>
             <DatePicker layoutX="21.0" layoutY="82.0" prefHeight="26.0" prefWidth="150.0" promptText="Date" />
-            <Button layoutX="26.0" layoutY="371.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="140.0" text="Profile" />
+            <Button fx:id="goProfile" layoutX="26.0" layoutY="371.0" mnemonicParsing="false" onAction="#switchToProfile" prefHeight="30.0" prefWidth="140.0" text="Profile" />
          </children>
       </AnchorPane>
       <TableView layoutX="200.0" layoutY="48.0" prefHeight="503.0" prefWidth="500.0">

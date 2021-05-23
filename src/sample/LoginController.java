@@ -43,6 +43,8 @@ public class LoginController implements Initializable{
     private TextField usernameTextField;
     @FXML
     private PasswordField enterPasswordField;
+    @FXML
+    private Button loginButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
@@ -87,7 +89,7 @@ public class LoginController implements Initializable{
             while(queryResult.next()){
                 if(queryResult.getInt(1) == 1){
                     //loginMessageLabel.setText("Zalogowano pomyślnie");
-                    createAccountForm();
+                    switchToProducts();
                 }else{
                     loginMessageLabel.setText("Podano zły login lub hasło, spróbuj ponownie");
                 }
@@ -101,14 +103,12 @@ public class LoginController implements Initializable{
 
     }
 
-    public void createAccountForm(){
+    public void switchToProducts() throws Exception{
         try{
 
-            Parent root = FXMLLoader.load(getClass().getResource("register.fxml"));
-            Stage registerStage = new Stage();
-            registerStage.initStyle(StageStyle.UNDECORATED);
-            registerStage.setScene(new Scene(root, 520, 562));
-            registerStage.show();
+            Parent root = FXMLLoader.load(getClass().getResource("TableProducts.fxml"));
+            Stage window = (Stage) loginButton.getScene().getWindow();
+            window.setScene(new Scene(root, 900, 550));
 
         }catch(Exception e){
             e.printStackTrace();

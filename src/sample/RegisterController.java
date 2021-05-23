@@ -93,9 +93,9 @@ public class RegisterController implements Initializable {
 
     private void loadDataToCheckBox(){
         list.removeAll(list);
-        String a = "1";
-        String b = "2";
-        String c = "3";
+        String a = "Kierownik";
+        String b = "Kasjer";
+        String c = "Magazynier";
 
         list.addAll(a, b, c);
 
@@ -118,8 +118,8 @@ public class RegisterController implements Initializable {
         String insertValuesLogin = username + "','" + password + "')";
         String insertToRegisterLogin = insertFieldsLogin + insertValuesLogin;
 
-        String insertFieldsUserData = "INSERT INTO employees(name, last_name, position_id) VALUES ('";
-        String insertValuesUserData = firstname + "','" + lastname + "','" + position + "')";
+        String insertFieldsUserData = "INSERT INTO employees(name, last_name, position_id, user_acc_id) VALUES ('";
+        String insertValuesUserData = firstname + "','" + lastname + "','" + position + "', (SELECT user_id from users where name='" + username + "'))";
         String insertToRegisterUserData = insertFieldsUserData + insertValuesUserData;
 
 
