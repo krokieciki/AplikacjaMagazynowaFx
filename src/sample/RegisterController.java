@@ -25,8 +25,7 @@ public class RegisterController implements Initializable {
 
     DatabaseConnection dbConn = new DatabaseConnection();
     Connection conn = dbConn.getConnection();
-    Statement statement = dbConn.getStatement();
-    SqlProductParser sqlProductParser = new SqlProductParser();
+    Statement statement = dbConn.getStatement();;
     String query;
 
     @FXML

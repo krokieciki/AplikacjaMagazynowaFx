@@ -2,7 +2,6 @@ package sample;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,7 +12,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 
 import java.io.File;
@@ -22,7 +20,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class TableProductsController implements Initializable {
@@ -30,8 +27,8 @@ public class TableProductsController implements Initializable {
     DatabaseConnection dbConn = new DatabaseConnection();
     Connection conn = dbConn.getConnection();
     Statement statement = dbConn.getStatement();
-    SqlProductParser sqlProductParser = new SqlProductParser();
     String query;
+    ResultSet rs;
 
 
     @FXML
@@ -41,50 +38,137 @@ public class TableProductsController implements Initializable {
     @FXML
     private ImageView storageImageView;
 
+    //tabela
     @FXML
-    private TableView<ModelTable> table;
+    private TableView<ProductModel> table;
     @FXML
-    private TableColumn<ModelTable, String> column_id;
+    private TableColumn<ProductModel, String> column_id;
     @FXML
-    private TableColumn<ModelTable, String> column_name;
+    private TableColumn<ProductModel, String> column_name;
     @FXML
-    private TableColumn<ModelTable, String> column_price;
+    private TableColumn<ProductModel, String> column_price;
     @FXML
-    private TableColumn<ModelTable, String> column_date;
+    private TableColumn<ProductModel, String> column_date;
     @FXML
-    private TableColumn<ModelTable, String> column_quantity;
+    private TableColumn<ProductModel, String> column_quantity;
+    ObservableList<ProductModel> oblist = FXCollections.observableArrayList();
 
-    ObservableList<ModelTable> oblist = FXCollections.observableArrayList();
+    //dodawanie i usuwanie
+    @FXML
+    private Button addButton;
+    @FXML
+    private Button deleteButton;
+    @FXML
+    private TextField nameInput;
+    @FXML
+    private TextField priceInput;
+    @FXML
+    private DatePicker dateInput;
+    @FXML
+    private TextField quantityInput;
+
+    //filtry
+    @FXML
+    private TextField searchInput;
+    @FXML
+    private TextField priceFromInput;
+    @FXML
+    private TextField priceToInput;
+    @FXML
+    private DatePicker dateFromInput;
+    @FXML
+    private DatePicker dateToInput;
+    @FXML
+    private TextField quantityFromInput;
+    @FXML
+    private TextField quantityToInput;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
         File storageFile = new File("images/storage-icon.png");
         Image storageImage = new Image(storageFile.toURI().toString());
         storageImageView.setImage(storageImage);
-
-        try {
-            ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM products");
-
-            while (rs.next()) {
-                oblist.add(new ModelTable(rs.getString("product_id"), rs.getString("product_name"),
-                        rs.getString("price"), rs.getString("expiry_date"),
-                        rs.getString("quantity")));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
+        table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         column_id.setCellValueFactory(new PropertyValueFactory<>("product_id"));
         column_name.setCellValueFactory(new PropertyValueFactory<>("product_name"));
         column_price.setCellValueFactory(new PropertyValueFactory<>("price"));
         column_date.setCellValueFactory(new PropertyValueFactory<>("expiry_date"));
         column_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
-        table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        table.setItems(oblist);
+        try {
+            rs = conn.createStatement().executeQuery("SELECT * FROM products");
+
+            populateTable(rs);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
-    public void createOneNew(Product product)
+    public void populateTable(ResultSet result) throws SQLException {
+        oblist.clear();
+        while (result.next()) {
+            oblist.add(new ProductModel(result.getString("product_id"),
+                    result.getString("product_name"), result.getString("price"),
+                    result.getString("expiry_date"), result.getString("quantity")));
+        }
+        table.setItems(oblist);
+
+    }
+
+    public void addButtonOnAction() {
+        ProductModel product = new ProductModel();
+        product.setProduct_name(nameInput.getText());
+        product.setPrice((priceInput.getText()));
+        product.setExpiry_date(dateInput.getValue().toString());
+        product.setQuantity(quantityInput.getText());
+
+        //table.getItems().add(product);
+        //chyba lepiej dodam do bazy, a potem odswoeze widok, bo
+        //nie bedzie id
+
+        try {
+            conn.createStatement().execute("INSERT INTO products VALUES ('" +nameInput.getText() + "', '" +
+                            priceInput.getText() + "', '" + dateInput.getValue().toString() + "', '" +
+                            quantityInput.getText() + "');");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        nameInput.clear();
+        priceInput.clear();
+        dateInput.getEditor().clear();
+        quantityInput.clear();
+
+        try {
+            rs = conn.createStatement().executeQuery("SELECT * FROM products");
+            populateTable(rs);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public void deleteButtonOnAction() {
+        oblist.clear();
+        
+
+    }
+
+    public void logoutButtonOnAction() throws Exception{
+        Parent root = FXMLLoader.load(getClass().getResource("HomePage.fxml"));
+
+        Stage window = (Stage) goProfile.getScene().getWindow();
+        window.setScene(new Scene(root, 520, 400));
+    }
+
+    public void switchToProfile() throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("Profile.fxml"));
+
+        Stage window = (Stage) goProfile.getScene().getWindow();
+        window.setScene(new Scene(root, 520, 400));
+    }
+
+/*    public void createOneNew(Product product)
     {
         query = sqlProductParser.createOneNew(product);
 
@@ -290,19 +374,5 @@ public class TableProductsController implements Initializable {
         } catch (SQLException e) {
             System.out.println("Błąd operacji");
         }
-    }
-
-    public void logoutButtonOnAction() throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("HomePage.fxml"));
-
-        Stage window = (Stage) goProfile.getScene().getWindow();
-        window.setScene(new Scene(root, 520, 400));
-    }
-
-    public void switchToProfile() throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("Profile.fxml"));
-
-        Stage window = (Stage) goProfile.getScene().getWindow();
-        window.setScene(new Scene(root, 520, 400));
-    }
+    }*/
 }

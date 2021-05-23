@@ -23,7 +23,6 @@ public class HomePageController implements Initializable {
     DatabaseConnection dbConn = new DatabaseConnection();
     Connection conn = dbConn.getConnection();
     Statement statement = dbConn.getStatement();
-    SqlProductParser sqlProductParser = new SqlProductParser();
     String query;
 
     @FXML

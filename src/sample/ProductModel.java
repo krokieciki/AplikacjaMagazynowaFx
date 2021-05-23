@@ -1,6 +1,6 @@
 package sample;
 
-public class ModelTable {
+public class ProductModel {
 
     String product_id;
     String product_name;
@@ -48,12 +48,16 @@ public class ModelTable {
         this.quantity = quantity;
     }
 
-    public ModelTable(String product_id, String name, String price, String date, String quantity) {
+    public ProductModel(String product_id, String name, String price, String date, String quantity) {
         this.product_id = product_id;
         this.product_name = name;
         this.price = price;
         this.expiry_date = date;
         this.quantity = quantity;
+    }
+
+    public ProductModel() {
+
     }
 
 
