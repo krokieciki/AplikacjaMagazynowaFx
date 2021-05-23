@@ -30,13 +30,13 @@
             <Button fx:id="goProfile" layoutX="26.0" layoutY="371.0" mnemonicParsing="false" onAction="#switchToProfile" prefHeight="30.0" prefWidth="140.0" text="Profile" />
          </children>
       </AnchorPane>
-      <TableView layoutX="200.0" layoutY="48.0" prefHeight="503.0" prefWidth="500.0">
+      <TableView fx:id="table" layoutX="200.0" layoutY="48.0" prefHeight="503.0" prefWidth="500.0">
         <columns>
-          <TableColumn fx:id="col_name" prefWidth="46.4000244140625" text="ID" />
-          <TableColumn fx:id="col_price" minWidth="0.0" prefWidth="115.199951171875" text="Name" />
-            <TableColumn fx:id="col_quantity" minWidth="0.0" prefWidth="71.20001220703125" text="Price" />
-            <TableColumn prefWidth="140.79995727539062" text="Expiration date" />
-            <TableColumn prefWidth="124.00006103515625" text="Quantity " />
+          <TableColumn fx:id="column_id" prefWidth="46.4000244140625" text="ID" />
+          <TableColumn fx:id="column_name" minWidth="0.0" prefWidth="115.199951171875" text="Name" />
+            <TableColumn fx:id="column_price" minWidth="0.0" prefWidth="71.20001220703125" text="Price" />
+            <TableColumn fx:id="column_date" prefWidth="140.79995727539062" text="Expiration date" />
+            <TableColumn fx:id="column_quantity" prefWidth="124.00006103515625" text="Quantity " />
         </columns>
       </TableView>
       <AnchorPane layoutX="700.0" prefHeight="551.0" prefWidth="200.0" style="-fx-background-color: #bc4848;">

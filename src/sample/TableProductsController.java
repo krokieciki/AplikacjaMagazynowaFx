@@ -1,15 +1,15 @@
 package sample;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.Scene;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -41,11 +41,46 @@ public class TableProductsController implements Initializable {
     @FXML
     private ImageView storageImageView;
 
+    @FXML
+    private TableView<ModelTable> table;
+    @FXML
+    private TableColumn<ModelTable, String> column_id;
+    @FXML
+    private TableColumn<ModelTable, String> column_name;
+    @FXML
+    private TableColumn<ModelTable, String> column_price;
+    @FXML
+    private TableColumn<ModelTable, String> column_date;
+    @FXML
+    private TableColumn<ModelTable, String> column_quantity;
+
+    ObservableList<ModelTable> oblist = FXCollections.observableArrayList();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
         File storageFile = new File("images/storage-icon.png");
         Image storageImage = new Image(storageFile.toURI().toString());
         storageImageView.setImage(storageImage);
+
+        try {
+            ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM products");
+
+            while (rs.next()) {
+                oblist.add(new ModelTable(rs.getString("product_id"), rs.getString("product_name"),
+                        rs.getString("price"), rs.getString("expiry_date"),
+                        rs.getString("quantity")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        column_id.setCellValueFactory(new PropertyValueFactory<>("product_id"));
+        column_name.setCellValueFactory(new PropertyValueFactory<>("product_name"));
+        column_price.setCellValueFactory(new PropertyValueFactory<>("price"));
+        column_date.setCellValueFactory(new PropertyValueFactory<>("expiry_date"));
+        column_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+
+        table.setItems(oblist);
     }
 
     public void createOneNew(Product product)
