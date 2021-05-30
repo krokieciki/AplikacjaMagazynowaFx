@@ -33,6 +33,7 @@ public class LoginController implements Initializable{
     Connection conn = dbConn.getConnection();
     Statement statement = dbConn.getStatement();
     String query;
+    public static int loggedUserId;
 
     @FXML
     private Button cancelButton;
@@ -49,7 +50,6 @@ public class LoginController implements Initializable{
     @FXML
     private Button loginButton;
 
-    int id;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
@@ -82,17 +82,14 @@ public class LoginController implements Initializable{
 
     public void validateLogin(){
 
-        String verifyLogin = "SELECT count(1) FROM users WHERE name = '" + usernameTextField.getText() + "' AND password ='" + enterPasswordField.getText() +  "'";
+        String verifyLogin = "SELECT user_id FROM users WHERE name = '" + usernameTextField.getText() + "' AND password ='" + enterPasswordField.getText() +  "'";
 
         try{
 
             ResultSet queryResult = statement.executeQuery(verifyLogin);
-            ResultSet idResult = statement.executeQuery("SELECT user_id from users where name =" + "'" + usernameTextField.getText() + "';");
-
-            this.id = idResult.getInt(1);
 
             while(queryResult.next()){
-                if(queryResult.getInt(1) == 1){
+                if((loggedUserId = queryResult.getInt("user_id")) != 0){
                     //loginMessageLabel.setText("Zalogowano pomyślnie");
                     switchToProducts();
                 }else{
@@ -108,17 +105,9 @@ public class LoginController implements Initializable{
 
     public void switchToProducts() throws Exception{
         try{
-
-            FXMLLoader loader = FXMLLoader.load(getClass().getResource("TableProducts.fxml"));
-            Parent root = loader.load();
+            Parent root = FXMLLoader.load(getClass().getResource("TableProducts.fxml"));
             Stage window = (Stage) loginButton.getScene().getWindow();
             window.setScene(new Scene(root, 900, 550));
-
-            TableProductsController controller = loader.getController();
-
-
-
-
 
 
         }catch(Exception e){
@@ -127,5 +116,4 @@ public class LoginController implements Initializable{
 
         }
     }
-
 }

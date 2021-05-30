@@ -30,8 +30,6 @@ public class TableProductsController implements Initializable {
     String query;
     ResultSet rs;
 
-    int id;
-
     @FXML
     private Button goProfile;
     @FXML
