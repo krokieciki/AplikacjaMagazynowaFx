@@ -382,27 +382,8 @@ public class TableProductsController implements Initializable {
         } catch (SQLException e) {
             System.out.println("Błąd operacji");
         }
-<<<<<<< HEAD
+
     }*/
-=======
+
     }
 
-    public void logoutButtonOnAction() throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("HomePage.fxml"));
-
-        Stage window = (Stage) goProfile.getScene().getWindow();
-        window.setScene(new Scene(root, 520, 400));
-    }
-
-    public void switchToProfile() throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("Profile.fxml"));
-
-        Stage window = (Stage) goProfile.getScene().getWindow();
-        window.setScene(new Scene(root, 520, 400));
-    }
-
-    public void getId(int id) {
-    this.id = id;
-    }
->>>>>>> michal
-}
