@@ -11,3 +11,4 @@ module-info.java
 bin/
 out/
 DatabaseConnection.java
+src/sample/DatabaseConnection.java

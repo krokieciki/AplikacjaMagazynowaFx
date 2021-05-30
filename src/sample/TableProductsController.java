@@ -176,7 +176,7 @@ public class TableProductsController implements Initializable {
         window.setScene(new Scene(root, 520, 400));
     }
 
-/*    public void createOneNew(Product product)
+    /*public void createOneNew(Product product)
     {
         query = sqlProductParser.createOneNew(product);
 

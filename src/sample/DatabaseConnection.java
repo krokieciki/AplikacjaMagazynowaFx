@@ -9,7 +9,7 @@ public class DatabaseConnection {
 
     public Connection databaseLink;
     public Statement statement;
-    final String connectingString = "jdbc:sqlserver://127.0.0.1\\MYSQL:51491;Database=magazyn;" +
+    final String connectingString = "jdbc:sqlserver://127.0.0.1\\MYSQL:63546;Database=magazyn;" +
             "integratedSecurity=True";
     final String DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 

@@ -116,7 +116,7 @@ public class LoginController implements Initializable{
 
             TableProductsController controller = loader.getController();
 
-            controller.getId(id);
+
 
 
 

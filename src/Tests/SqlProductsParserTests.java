@@ -31,6 +31,7 @@ class SqlProductParserTest {
             String queryWithParameters = parser.createManyNew(product,0 );
             assertEquals("INSERT INTO products VALUES ;",queryWithParameters);
         }
+
         @Test
         public void createManyNewShouldReturnCorrectQueryIfAmountIsNotZero() {
             SqlProductParser parser = new SqlProductParser();
