@@ -15,10 +15,14 @@ import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.stage.StageStyle;
 
+import java.awt.*;
 import java.io.File;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 import java.net.URL;
@@ -44,6 +48,8 @@ public class LoginController implements Initializable{
     private PasswordField enterPasswordField;
     @FXML
     private Button loginButton;
+
+    int id;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
@@ -75,15 +81,15 @@ public class LoginController implements Initializable{
 
 
     public void validateLogin(){
-        DatabaseConnection connectNow = new DatabaseConnection();
-        Connection connectDB = connectNow.getConnection();
 
         String verifyLogin = "SELECT count(1) FROM users WHERE name = '" + usernameTextField.getText() + "' AND password ='" + enterPasswordField.getText() +  "'";
 
         try{
 
-            Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(verifyLogin);
+            ResultSet idResult = statement.executeQuery("SELECT user_id from users where name =" + "'" + usernameTextField.getText() + "';");
+
+            this.id = idResult.getInt(1);
 
             while(queryResult.next()){
                 if(queryResult.getInt(1) == 1){
@@ -98,16 +104,22 @@ public class LoginController implements Initializable{
             e.printStackTrace();
             e.getCause();
         }
-
-
     }
 
     public void switchToProducts() throws Exception{
         try{
 
-            Parent root = FXMLLoader.load(getClass().getResource("TableProducts.fxml"));
+            FXMLLoader loader = FXMLLoader.load(getClass().getResource("TableProducts.fxml"));
+            Parent root = loader.load();
             Stage window = (Stage) loginButton.getScene().getWindow();
             window.setScene(new Scene(root, 900, 550));
+
+            TableProductsController controller = loader.getController();
+
+            controller.getId(id);
+
+
+
 
         }catch(Exception e){
             e.printStackTrace();
