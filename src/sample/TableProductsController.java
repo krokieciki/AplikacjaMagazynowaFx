@@ -34,6 +34,7 @@ public class TableProductsController implements Initializable {
     SqlProductParser sqlProductParser = new SqlProductParser();
     String query;
 
+    int id;
 
     @FXML
     private Button goProfile;
@@ -47,6 +48,7 @@ public class TableProductsController implements Initializable {
         File storageFile = new File("images/storage-icon.png");
         Image storageImage = new Image(storageFile.toURI().toString());
         storageImageView.setImage(storageImage);
+        System.out.print(id);
     }
 
     public void createOneNew(Product product)
@@ -269,5 +271,9 @@ public class TableProductsController implements Initializable {
 
         Stage window = (Stage) goProfile.getScene().getWindow();
         window.setScene(new Scene(root, 520, 400));
+    }
+
+    public void getId(int id) {
+    this.id = id;
     }
 }
