@@ -10,3 +10,4 @@ module-info.java
 .settings/
 bin/
 out/
+DatabaseConnection.java
