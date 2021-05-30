@@ -68,7 +68,7 @@ public class TableProductsController implements Initializable {
 
     //filtry
     @FXML
-    private TextField searchInput;
+    private TextField nameFilterInput;
     @FXML
     private TextField priceFromInput;
     @FXML
@@ -81,6 +81,10 @@ public class TableProductsController implements Initializable {
     private TextField quantityFromInput;
     @FXML
     private TextField quantityToInput;
+    @FXML
+    private Button applyButton;
+    @FXML
+    private Button clearButton;
 
 
     @Override
@@ -105,7 +109,7 @@ public class TableProductsController implements Initializable {
 
     public void populateTable() throws SQLException {
         ObservableList<ProductModel> oblist = FXCollections.observableArrayList();
-        rs = conn.createStatement().executeQuery("SELECT * FROM products");
+        rs = statement.executeQuery("SELECT * FROM products");
         oblist.clear();
         while (rs.next()) {
             oblist.add(new ProductModel(rs.getString("product_id"),
@@ -160,6 +164,96 @@ public class TableProductsController implements Initializable {
         }
     }
 
+    public void applyButtonOnAction() {
+        String name = nameFilterInput.getText();
+        String priceFrom = priceFromInput.getText();
+        String priceTo = priceToInput.getText();
+        String dateFrom = "";
+        String dateTo = "";
+        if(dateFromInput.getValue() != null) {
+            dateFrom = dateFromInput.getValue().toString();
+        }
+        if(dateToInput.getValue() != null) {
+            dateTo = dateToInput.getValue().toString();
+        }
+
+        /*String dateFrom = dateFromInput.getValue().toString();
+        String dateTo = dateToInput.getValue().toString();*/
+        String quantityFrom = quantityFromInput.getText();
+        String quantityTo = quantityToInput.getText();
+
+        boolean addAND = false;
+
+        query = "SELECT * FROM products";
+
+        if(name.isEmpty() && priceFrom.isEmpty() && priceTo.isEmpty() && dateFrom.isEmpty() &&
+                dateTo.isEmpty() && quantityFrom.isEmpty() && quantityTo.isEmpty()) {
+            query += ";";
+        } else{
+            query += " WHERE";
+            if (!name.isEmpty()){
+                query += " product_name = '" + name + "'";
+                addAND = true;
+            }
+            if (!priceFrom.isEmpty()) {
+                if(addAND) query += " AND";
+                query += " price > '" + priceFrom + "'";
+                addAND = true;
+            }
+            if (!priceTo.isEmpty()) {
+                if(addAND) query += " AND";
+                query += " price < '" + priceTo + "'";
+                addAND = true;
+            }
+            if (!dateFrom.isEmpty()) {
+                if(addAND) query += " AND";
+                query += " expiry_date > '" + dateFrom + "'";
+                addAND = true;
+            }
+            if (!dateTo.isEmpty()) {
+                if(addAND) query += " AND";
+                query += " expiry_date < '" + dateTo + "'";
+                addAND = true;
+            }
+            if (!quantityFrom.isEmpty()) {
+                if(addAND) query += " AND";
+                query += " quantity > '" + quantityFrom + "'";
+                addAND = true;
+            }
+            if (!quantityTo.isEmpty()) {
+                if(addAND) query += " AND";
+                query += " quantity < '" + quantityTo + "'";
+            }
+            query += ";";
+        }
+
+        ObservableList<ProductModel> oblist = FXCollections.observableArrayList();
+        try {
+            rs = statement.executeQuery(query);
+
+        oblist.clear();
+        while (rs.next()) {
+            oblist.add(new ProductModel(rs.getString("product_id"),
+                    rs.getString("product_name"), rs.getString("price"),
+                    rs.getString("expiry_date"), rs.getString("quantity")));
+        }
+        table.setItems(oblist);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+
+    public void clearButtonOnAction() {
+        nameFilterInput.clear();
+        priceFromInput.clear();
+        priceToInput.clear();
+        dateFromInput.getEditor().clear();
+        dateToInput.getEditor().clear();
+        quantityFromInput.clear();
+        quantityToInput.clear();
+    }
+
     public void logoutButtonOnAction() throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("HomePage.fxml"));
 
@@ -174,214 +268,7 @@ public class TableProductsController implements Initializable {
         window.setScene(new Scene(root, 520, 400));
     }
 
-    /*public void createOneNew(Product product)
-    {
-        query = sqlProductParser.createOneNew(product);
 
-        try
-        {
-            int rows = statement.executeUpdate(query);
-            System.out.println("Zmieniono " + rows + " wierszy");
-
-        } catch (SQLException e) {
-            System.out.println("Błąd operacji");
-        }
-    }
-
-    public void createManyNew(Product product, int amount) {
-        query = sqlProductParser.createManyNew(product, amount);
-
-        try {
-            int rows = statement.executeUpdate(query);
-            System.out.println("Zmieniono " + rows + " wierszy");
-
-        } catch (SQLException e) {
-            System.out.println("Błąd operacji");
-        }
-    }
-
-    public void deleteByID(int ID) {
-        query = sqlProductParser.deleteByID(ID);
-
-        try {
-            int rows = statement.executeUpdate(query);
-            System.out.println("Zmieniono " + rows + " wierszy");
-
-        } catch (SQLException e) {
-            System.out.println("Błąd operacji");
-        }
-    }
-
-    // usunie produkt o podanej nazwie z najkrótszą datą
-    public void deleteOneByName(String productName) {
-        query = sqlProductParser.deleteOneByName(productName);
-
-        try {
-            int rows = statement.executeUpdate(query);
-            System.out.println("Zmieniono " + rows + " wierszy");
-
-        } catch (SQLException e) {
-            System.out.println("Błąd operacji");
-        }
-    }
-
-    public void deleteAllByName(String productName) {
-        query = sqlProductParser.deleteAllByName(productName);
-
-        try {
-            int rows = statement.executeUpdate(query);
-            System.out.println("Zmieniono " + rows + " wierszy");
-
-        } catch (SQLException e) {
-            System.out.println("Błąd operacji");
-        }
-    }
-
-    public void displayAllByID() {
-        query = sqlProductParser.displayAllByID();
-
-        try {
-            ResultSet rs = statement.executeQuery(query);
-            if(rs.next()) {
-                do {
-                    System.out.printf("%7s %11s %7s PLN %12s\n", "id " + rs.getString(1),
-                            rs.getString(2), rs.getString(3), rs.getString(4));
-                }while (rs.next());
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Błąd operacji");
-        }
-    }
-
-    public void displayAllByName() {
-        query = sqlProductParser.displayAllByName();
-
-        try {
-            ResultSet rs = statement.executeQuery(query);
-            if(rs.next()) {
-                do {
-                    System.out.printf("%7s %11s %7s PLN %12s\n", "id " + rs.getString(1),
-                            rs.getString(2), rs.getString(3), rs.getString(4));
-                }while (rs.next());
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Błąd operacji");
-        }
-    }
-
-    public void displayByName(String productName) {
-        query = sqlProductParser.displayByName(productName);
-
-        try {
-            ResultSet rs = statement.executeQuery(query);
-            if(rs.next()) {
-                do {
-                    System.out.printf("%7s %11s %7s PLN %12s\n", "id " + rs.getString(1),
-                            rs.getString(2), rs.getString(3), rs.getString(4));
-                }while (rs.next());
-            }
-            ;
-        } catch (SQLException e) {
-            System.out.println("Błąd operacji");
-        }
-    }
-
-    public void displayCheaperThen(double max) {
-        query = sqlProductParser.displayCheaper(max);
-
-        try {
-            ResultSet rs = statement.executeQuery(query);
-            if(rs.next()) {
-                do {
-                    System.out.printf("%7s %11s %7s PLN %12s\n", "id " + rs.getString(1),
-                            rs.getString(2), rs.getString(3), rs.getString(4));
-                }while (rs.next());
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Błąd operacji");
-        }
-    }
-
-    public void displayMoreExpensiveThen(double min) {
-        query = sqlProductParser.displayMoreExpensive(min);
-
-        try {
-            ResultSet rs = statement.executeQuery(query);
-            if(rs.next()) {
-                do {
-                    System.out.printf("%7s %11s %7s PLN %12s\n", "id " + rs.getString(1),
-                            rs.getString(2), rs.getString(3), rs.getString(4));
-                }while (rs.next());
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Błąd operacji");
-        }
-    }
-
-    public void displayDateShorter(LocalDate date) {
-        query = sqlProductParser.displayDateShorter(date);
-
-        try {
-            ResultSet rs = statement.executeQuery(query);
-            if(rs.next()) {
-                do {
-                    System.out.printf("%7s %11s %7s PLN %12s\n", "id " + rs.getString(1),
-                            rs.getString(2), rs.getString(3), rs.getString(4));
-                }while (rs.next());
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Błąd operacji");
-        }
-    }
-
-    public void displayDateLonger(LocalDate date) {
-        query = sqlProductParser.displayDateLonger(date);
-
-        try {
-            ResultSet rs = statement.executeQuery(query);
-            if(rs.next()) {
-                do {
-                    System.out.printf("%7s %11s %7s PLN %12s\n", "id " + rs.getString(1),
-                            rs.getString(2), rs.getString(3), rs.getString(4));
-                }while (rs.next());
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Błąd operacji");
-        }
-    }
-
-    public void displayAmountAll() {
-        query = sqlProductParser.displayAmountAll();
-
-        try {
-            ResultSet rs = statement.executeQuery(query);
-            rs.next();
-            System.out.println("W magazynie jest " + rs.getInt(1) + " produktów");
-
-        } catch (SQLException e) {
-            System.out.println("Błąd operacji");
-        }
-    }
-
-    public void displayAmountByName(String productName) {
-        query = sqlProductParser.displayAmountByName(productName);
-
-        try {
-            ResultSet rs = statement.executeQuery(query);
-            rs.next();
-            System.out.println("W magazynie jest " + rs.getInt(1) + " szt. " + productName);
-
-        } catch (SQLException e) {
-            System.out.println("Błąd operacji");
-        }
-
-    }*/
 
     }
 
