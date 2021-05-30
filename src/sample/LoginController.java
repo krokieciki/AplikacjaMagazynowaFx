@@ -89,13 +89,13 @@ public class LoginController implements Initializable{
             ResultSet queryResult = statement.executeQuery(verifyLogin);
 
             while(queryResult.next()){
-                if((loggedUserId = queryResult.getInt("user_id")) != 0){
+                if(queryResult.getInt("user_id") != 0){
                     //loginMessageLabel.setText("Zalogowano pomyślnie");
+                    loggedUserId = queryResult.getInt("user_id");
                     switchToProducts();
-                }else{
-                    loginMessageLabel.setText("Podano zły login lub hasło, spróbuj ponownie");
                 }
             }
+            loginMessageLabel.setText("Podano zły login lub hasło, spróbuj ponownie");
 
         }catch (Exception e){
             e.printStackTrace();
