@@ -168,17 +168,18 @@ public class TableProductsController implements Initializable {
         String name = nameFilterInput.getText();
         String priceFrom = priceFromInput.getText();
         String priceTo = priceToInput.getText();
-        String dateFrom = "";
-        String dateTo = "";
+
+
+        String dateFrom;
         if(dateFromInput.getValue() != null) {
             dateFrom = dateFromInput.getValue().toString();
-        }
+        }else dateFrom = "";
+
+        String dateTo;
         if(dateToInput.getValue() != null) {
             dateTo = dateToInput.getValue().toString();
-        }
+        }else dateTo = "";
 
-        /*String dateFrom = dateFromInput.getValue().toString();
-        String dateTo = dateToInput.getValue().toString();*/
         String quantityFrom = quantityFromInput.getText();
         String quantityTo = quantityToInput.getText();
 
@@ -197,32 +198,32 @@ public class TableProductsController implements Initializable {
             }
             if (!priceFrom.isEmpty()) {
                 if(addAND) query += " AND";
-                query += " price > '" + priceFrom + "'";
+                query += " price >= '" + priceFrom + "'";
                 addAND = true;
             }
             if (!priceTo.isEmpty()) {
                 if(addAND) query += " AND";
-                query += " price < '" + priceTo + "'";
+                query += " price <= '" + priceTo + "'";
                 addAND = true;
             }
             if (!dateFrom.isEmpty()) {
                 if(addAND) query += " AND";
-                query += " expiry_date > '" + dateFrom + "'";
+                query += " expiry_date >= '" + dateFrom + "'";
                 addAND = true;
             }
             if (!dateTo.isEmpty()) {
                 if(addAND) query += " AND";
-                query += " expiry_date < '" + dateTo + "'";
+                query += " expiry_date <= '" + dateTo + "'";
                 addAND = true;
             }
             if (!quantityFrom.isEmpty()) {
                 if(addAND) query += " AND";
-                query += " quantity > '" + quantityFrom + "'";
+                query += " quantity >= '" + quantityFrom + "'";
                 addAND = true;
             }
             if (!quantityTo.isEmpty()) {
                 if(addAND) query += " AND";
-                query += " quantity < '" + quantityTo + "'";
+                query += " quantity <= '" + quantityTo + "'";
             }
             query += ";";
         }
@@ -241,6 +242,7 @@ public class TableProductsController implements Initializable {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        
     }
 
 
@@ -248,10 +250,16 @@ public class TableProductsController implements Initializable {
         nameFilterInput.clear();
         priceFromInput.clear();
         priceToInput.clear();
-        dateFromInput.getEditor().clear();
-        dateToInput.getEditor().clear();
+        dateFromInput.setValue(null);
+        dateToInput.setValue(null);
         quantityFromInput.clear();
         quantityToInput.clear();
+
+        try {
+            populateTable();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     public void logoutButtonOnAction() throws Exception{
