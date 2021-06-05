@@ -121,12 +121,19 @@ public class TableProductsController implements Initializable {
     }
 
     public void addButtonOnAction() {
+        String quantity = quantityInput.getText();
+        if (quantity.contains(".")) {
+            quantity = quantity.substring(0, quantity.indexOf("."));
+        }
+        if (quantity.contains(",")) {
+            quantity = quantity.substring(0, quantity.indexOf(","));
+        }
 
         try {
             conn.createStatement().executeUpdate("INSERT INTO products VALUES ('" +nameInput.getText() + "', '" +
                             priceInput.getText().replace(',', '.') + "', '" +
                             dateInput.getValue().toString() + "', '" +
-                            quantityInput.getText() + "');");
+                            quantity + "');");
 
             nameInput.clear();
             priceInput.clear();
