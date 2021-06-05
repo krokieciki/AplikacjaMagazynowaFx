@@ -193,7 +193,7 @@ public class TableProductsController implements Initializable {
         } else{
             query += " WHERE";
             if (!name.isEmpty()){
-                query += " product_name = '" + name + "'";
+                query += " product_name LIKE '%" + name + "%'";
                 addAND = true;
             }
             if (!priceFrom.isEmpty()) {
@@ -242,7 +242,7 @@ public class TableProductsController implements Initializable {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        
+
     }
 
 
