@@ -121,23 +121,23 @@ public class TableProductsController implements Initializable {
     }
 
     public void addButtonOnAction() {
-        ProductModel product = new ProductModel();
-        product.setProduct_name(nameInput.getText());
-        product.setPrice((priceInput.getText()));
-        product.setExpiry_date(dateInput.getValue().toString());
-        product.setQuantity(quantityInput.getText());
 
         try {
             conn.createStatement().executeUpdate("INSERT INTO products VALUES ('" +nameInput.getText() + "', '" +
-                            priceInput.getText() + "', '" + dateInput.getValue().toString() + "', '" +
+                            priceInput.getText().replace(',', '.') + "', '" +
+                            dateInput.getValue().toString() + "', '" +
                             quantityInput.getText() + "');");
+
+            nameInput.clear();
+            priceInput.clear();
+            dateInput.getEditor().clear();
+            quantityInput.clear();
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            AlertBox.dispaly("Cena i ilość muszą być liczbami! ");
+        } catch (NullPointerException e) {
+            AlertBox.dispaly("Wprowadź datę!");
         }
-        nameInput.clear();
-        priceInput.clear();
-        dateInput.getEditor().clear();
-        quantityInput.clear();
 
         try {
             populateTable();
@@ -276,7 +276,5 @@ public class TableProductsController implements Initializable {
         window.setScene(new Scene(root, 520, 400));
     }
 
-
-
-    }
+}
 
