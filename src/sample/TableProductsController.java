@@ -121,23 +121,30 @@ public class TableProductsController implements Initializable {
     }
 
     public void addButtonOnAction() {
-        ProductModel product = new ProductModel();
-        product.setProduct_name(nameInput.getText());
-        product.setPrice((priceInput.getText()));
-        product.setExpiry_date(dateInput.getValue().toString());
-        product.setQuantity(quantityInput.getText());
+        String quantity = quantityInput.getText();
+        if (quantity.contains(".")) {
+            quantity = quantity.substring(0, quantity.indexOf("."));
+        }
+        if (quantity.contains(",")) {
+            quantity = quantity.substring(0, quantity.indexOf(","));
+        }
 
         try {
             conn.createStatement().executeUpdate("INSERT INTO products VALUES ('" +nameInput.getText() + "', '" +
-                            priceInput.getText() + "', '" + dateInput.getValue().toString() + "', '" +
-                            quantityInput.getText() + "');");
+                            priceInput.getText().replace(',', '.') + "', '" +
+                            dateInput.getValue().toString() + "', '" +
+                            quantity + "');");
+
+            nameInput.clear();
+            priceInput.clear();
+            dateInput.getEditor().clear();
+            quantityInput.clear();
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            AlertBox.dispaly("Cena i ilość muszą być liczbami! ");
+        } catch (NullPointerException e) {
+            AlertBox.dispaly("Wprowadź datę!");
         }
-        nameInput.clear();
-        priceInput.clear();
-        dateInput.getEditor().clear();
-        quantityInput.clear();
 
         try {
             populateTable();
@@ -193,7 +200,7 @@ public class TableProductsController implements Initializable {
         } else{
             query += " WHERE";
             if (!name.isEmpty()){
-                query += " product_name = '" + name + "'";
+                query += " product_name LIKE '%" + name + "%'";
                 addAND = true;
             }
             if (!priceFrom.isEmpty()) {
@@ -242,7 +249,7 @@ public class TableProductsController implements Initializable {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        
+
     }
 
 
@@ -276,7 +283,5 @@ public class TableProductsController implements Initializable {
         window.setScene(new Scene(root, 520, 400));
     }
 
-
-
-    }
+}
 

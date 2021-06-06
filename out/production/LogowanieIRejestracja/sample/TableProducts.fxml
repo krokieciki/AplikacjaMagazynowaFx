@@ -26,7 +26,7 @@
                   <Image url="@../../images/storage-icon.png" />
                </image>
             </ImageView>
-            <DatePicker fx:id="dateInput" layoutX="21.0" layoutY="82.0" prefHeight="26.0" prefWidth="150.0" promptText="Date" />
+            <DatePicker fx:id="dateInput" editable="false" layoutX="21.0" layoutY="82.0" prefHeight="26.0" prefWidth="150.0" promptText="Date" />
             <Button fx:id="goProfile" layoutX="26.0" layoutY="371.0" mnemonicParsing="false" onAction="#switchToProfile" prefHeight="30.0" prefWidth="140.0" text="Profile" />
          </children>
       </AnchorPane>
@@ -54,13 +54,13 @@
             </Text>
             <TextField fx:id="priceFromInput" alignment="CENTER" layoutX="27.0" layoutY="193.0" prefHeight="26.0" prefWidth="56.0" promptText="From" />
             <TextField fx:id="priceToInput" alignment="CENTER" layoutX="114.0" layoutY="193.0" prefHeight="26.0" prefWidth="56.0" promptText="To" />
-            <DatePicker fx:id="dateFromInput" layoutX="48.0" layoutY="274.0" prefHeight="26.0" prefWidth="114.0" promptText="From" />
+            <DatePicker fx:id="dateFromInput" editable="false" layoutX="48.0" layoutY="274.0" prefHeight="26.0" prefWidth="114.0" promptText="From" />
             <Text layoutX="39.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search by expiry date" wrappingWidth="123.2171630859375">
                <font>
                   <Font name="Times New Roman" size="14.0" />
                </font>
             </Text>
-            <DatePicker fx:id="dateToInput" layoutX="48.0" layoutY="311.0" prefHeight="26.0" prefWidth="114.0" promptText="To" />
+            <DatePicker fx:id="dateToInput" editable="false" layoutX="48.0" layoutY="311.0" prefHeight="26.0" prefWidth="114.0" promptText="To" />
             <Text layoutX="89.0" layoutY="299.0" strokeType="OUTSIDE" strokeWidth="0.0" />
             <Text layoutX="43.0" layoutY="373.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search by quantity">
                <font>
