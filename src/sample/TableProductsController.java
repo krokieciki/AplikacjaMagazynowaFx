@@ -155,6 +155,9 @@ public class TableProductsController implements Initializable {
 
     public void deleteButtonOnAction() {
         ObservableList<ProductModel> oblist = FXCollections.observableArrayList();
+        if(table.getSelectionModel().isEmpty()) {
+            return;
+        }
         oblist = table.getSelectionModel().getSelectedItems();
         String idForDelete = "";
         for (ProductModel product : oblist) {

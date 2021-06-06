@@ -30,8 +30,6 @@ public class ProfileController implements Initializable {
     DatabaseConnection dbConn = new DatabaseConnection();
     Connection conn = dbConn.getConnection();
     Statement statement = dbConn.getStatement();
-    String query;
-    ResultSet rs;
 
     @FXML
     private ImageView profileImageView;
@@ -60,16 +58,16 @@ public class ProfileController implements Initializable {
 
     }
     public void GetUserProfileQuery() throws SQLException{
-        rs = statement.executeQuery("SELECT name, last_name, position_id FROM employees WHERE user_acc_id = " + LoginController.loggedUserId);
-        while(rs.next()){
-            FirstnameLabel.setText(rs.getString("name"));
-            LastnameLabel.setText(rs.getString("last_name"));
-            PositionLabel.setText(rs.getString("position_id"));
-        }
-        rs = statement.executeQuery("SELECT name FROM users WHERE user_id = " + LoginController.loggedUserId);;
-        while(rs.next()){
-            UsernameLabel.setText(rs.getString("name"));
-        }
+        ResultSet employeeQueryResult;
+        employeeQueryResult = statement.executeQuery("SELECT name, last_name, position_id FROM employees WHERE user_acc_id = " + LoginController.loggedUserId);
+        employeeQueryResult.next();
+        FirstnameLabel.setText(employeeQueryResult.getString("name"));
+        LastnameLabel.setText(employeeQueryResult.getString("last_name"));
+        PositionLabel.setText(employeeQueryResult.getString("position_id"));
+        ResultSet userQueryResult;
+        userQueryResult = statement.executeQuery("SELECT name FROM users WHERE user_id = " + LoginController.loggedUserId);
+            userQueryResult.next();
+            UsernameLabel.setText(userQueryResult.getString("name"));
     }
 
     public void cancelButtonAction()throws Exception{
