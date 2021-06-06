@@ -31,17 +31,45 @@ public class ProfileController implements Initializable {
     Connection conn = dbConn.getConnection();
     Statement statement = dbConn.getStatement();
     String query;
+    ResultSet rs;
 
     @FXML
     private ImageView profileImageView;
     @FXML
     private Button cancelButton;
+    @FXML
+    private Label UsernameLabel;
+    @FXML
+    private Label FirstnameLabel;
+    @FXML
+    private Label LastnameLabel;
+    @FXML
+    private Label PositionLabel;
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(URL url, ResourceBundle resourceBundle){
         File profileFile = new File("images/profile-icon.png");
         Image profileImage = new Image(profileFile.toURI().toString());
         profileImageView.setImage(profileImage);
+        try {
+            GetUserProfileQuery();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+
+    }
+    public void GetUserProfileQuery() throws SQLException{
+        rs = statement.executeQuery("SELECT name, last_name, position_id FROM employees WHERE user_acc_id = " + LoginController.loggedUserId);
+        while(rs.next()){
+            FirstnameLabel.setText(rs.getString("name"));
+            LastnameLabel.setText(rs.getString("last_name"));
+            PositionLabel.setText(rs.getString("position_id"));
+        }
+        rs = statement.executeQuery("SELECT name FROM users WHERE user_id = " + LoginController.loggedUserId);;
+        while(rs.next()){
+            UsernameLabel.setText(rs.getString("name"));
+        }
     }
 
     public void cancelButtonAction()throws Exception{
