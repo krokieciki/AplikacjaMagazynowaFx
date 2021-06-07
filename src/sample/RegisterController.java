@@ -92,9 +92,9 @@ public class RegisterController implements Initializable {
 
     private void loadDataToCheckBox(){
         list.removeAll(list);
-        String a = "Kierownik";
-        String b = "Kasjer";
-        String c = "Magazynier";
+        String a = "Manager";
+        String b = "Cashier";
+        String c = "Storekeeper";
 
         list.addAll(a, b, c);
 

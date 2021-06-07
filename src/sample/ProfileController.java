@@ -36,6 +36,8 @@ public class ProfileController implements Initializable {
     @FXML
     private Button cancelButton;
     @FXML
+    private Button deleteAccountButton;
+    @FXML
     private Label UsernameLabel;
     @FXML
     private Label FirstnameLabel;
@@ -76,5 +78,27 @@ public class ProfileController implements Initializable {
         Stage window = (Stage) cancelButton.getScene().getWindow();
         window.setScene(new Scene(root, 900, 550));
     }
+
+    public void switchToConfirmation() throws Exception{
+        try{
+            Parent root = FXMLLoader.load(getClass().getResource("Confirmation.fxml"));
+            Stage window = (Stage) deleteAccountButton.getScene().getWindow();
+            window.setScene(new Scene(root, 391, 232));
+
+        }catch(Exception e){
+            e.printStackTrace();
+            e.getCause();
+        }
+    }
+
+    public void deleteProfileOnAction(javafx.event.ActionEvent event) throws Exception {
+
+        switchToConfirmation();
+
+    }
+
+
+
+
 
 }

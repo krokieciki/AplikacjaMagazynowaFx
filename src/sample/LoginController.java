@@ -95,7 +95,7 @@ public class LoginController implements Initializable{
                     switchToProducts();
                 }
             }
-            loginMessageLabel.setText("Podano zły login lub hasło, spróbuj ponownie");
+            loginMessageLabel.setText("Invalid login or password");
 
         }catch (Exception e){
             e.printStackTrace();

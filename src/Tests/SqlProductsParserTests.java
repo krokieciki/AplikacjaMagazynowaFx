@@ -20,7 +20,6 @@ class SqlProductParserTest {
             Product product = new Product(5,"mleko",2.5,localDate);
             String queryWithParameters = parser.createOneNew(product);
             assertEquals("INSERT INTO products VALUES ('mleko', '2.5', '"+localDate+"')",queryWithParameters);
-
         }
 
         @Test
